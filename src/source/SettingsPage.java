@@ -2,57 +2,100 @@ package source;
 
 import exceptions.MaxPlayersExceeded;
 
-import java.io.Serializable;
+import java.io.*;
 
 public class SettingsPage implements Colours, Serializable {
-    private static String player1Colour;
-    private static String player2Colour;
-    private static String player3Colour;
-    private static String player4Colour;
-    private static String player5Colour;
-    private static String player6Colour;
-    private static String player7Colour;
-    private static String player8Colour;
+    private String[] colours;
     private static final long serialVersionUID = 5L;
 
     public SettingsPage() {
-        player1Colour = red;
-        player2Colour = blue;
-        player3Colour = yellow;
-        player4Colour = green;
-        player5Colour = pink;
-        player6Colour = orange;
-        player7Colour = white;
-        player8Colour = teal;
+        colours = new String[8];
+        colours[0] = red;
+        colours[1] = blue;
+        colours[2] = yellow;
+        colours[3] = green;
+        colours[4] = pink;
+        colours[5] = orange;
+        colours[6] = white;
+        colours[7] = teal;
+        saveSettings();
+    }
+
+    public void setColours(String[] c) {
+        colours = c;
+    }
+
+    private void saveSettings() {
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(new FileOutputStream("settings"));
+            oos.writeObject(this);
+        } catch (FileNotFoundException e) {
+            System.out.println("Settings can't be saved");
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if(oos != null) {
+                try {
+                    oos.close();
+                } catch (IOException e) {
+                    System.out.println("Settings can't be saved");
+                }
+            }
+        }
     }
 
     public void showCurrentSetting() {
-        System.out.println("Player 1 -> " + player1Colour);
-        System.out.println("Player 2 -> " + player2Colour);
-        System.out.println("Player 3 -> " + player3Colour);
-        System.out.println("Player 4 -> " + player4Colour);
-        System.out.println("Player 5 -> " + player5Colour);
-        System.out.println("Player 6 -> " + player6Colour);
-        System.out.println("Player 7 -> " + player7Colour);
-        System.out.println("Player 8 -> " + player8Colour);
+        System.out.println("Player 1 -> " + colours[0]);
+        System.out.println("Player 2 -> " + colours[1]);
+        System.out.println("Player 3 -> " + colours[2]);
+        System.out.println("Player 4 -> " + colours[3]);
+        System.out.println("Player 5 -> " + colours[4]);
+        System.out.println("Player 6 -> " + colours[5]);
+        System.out.println("Player 7 -> " + colours[6]);
+        System.out.println("Player 8 -> " + colours[7]);
     }
 
     public void showPage() throws MaxPlayersExceeded {
         showCurrentSetting();
+        boolean exit = false;
+        while(!exit) {
+            System.out.println("exit?(y/n)");
+            String EXIT = Main.input.next();
+            if(EXIT.toLowerCase().equals("y")) {
+                exit = true;
+                continue;
+            }
+            System.out.println("Choose the player");
+            int playerNumber = Main.input.nextInt();
+            if(playerNumber<=8 && playerNumber>0) {
+                System.out.println("Select the colour");
+                String colour = Main.input.next();
+                if(colour.equals(red) || colour.equals(blue) || colour.equals(yellow) || colour.equals(green) || colour.equals(orange) || colour.equals(pink) || colour.equals(white) || colour.equals(teal)) {
+                    selectColor(colour, playerNumber-1);
+                    saveSettings();
+                    showCurrentSetting();
+                } else {
+                    System.out.println(colour + " is not a colour. try again");
+                }
+            } else {
+                System.out.println("select a valid player, try again");
+            }
+        }
         System.out.println("Returning to MainPage");
         Main.loadMainPage();
     }
 
-    public static String[] getColours() {
-        String[] colours = new String[8];
-        colours[0] = player1Colour;
-        colours[1] = player2Colour;
-        colours[2] = player3Colour;
-        colours[3] = player4Colour;
-        colours[4] = player5Colour;
-        colours[5] = player6Colour;
-        colours[6] = player7Colour;
-        colours[7] = player8Colour;
+    public String[] getColours() {
         return colours;
+    }
+
+    public void selectColor(String colour, int j) {
+        for (int i=0; i<8; i++) {
+            if(colours[i].equals(colour)) {
+                colours[i] = colours[j];
+                colours[j] = colour;
+            }
+        }
     }
 }

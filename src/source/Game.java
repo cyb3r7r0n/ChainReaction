@@ -17,11 +17,11 @@ public class Game implements Serializable{
     private Player currentPlayer;
     private boolean lastMoveWasAUndo;
 
-    public Game(Grid grid, int numberOfPlayers) {
+    public Game(Grid grid, int numberOfPlayers, SettingsPage settingsPage) {
         this.grid = grid;
         this.numberOfPlayers = numberOfPlayers;
         this.players = new Player[numberOfPlayers];
-        String[] colours = SettingsPage.getColours();
+        String[] colours = settingsPage.getColours();
         for(int i=0; i<numberOfPlayers; i++) {
             this.players[i] = new Player(colours[i]);
         }

@@ -4,7 +4,7 @@ import exceptions.IllegalMoveException;
 
 import java.io.Serializable;
 
-public class Grid implements Serializable, Colours, Cloneable {
+public class Grid implements Serializable, Cloneable {
     private final int numberOfRows;
     private final int numberOfColumns;
     private Cell[][] grid;

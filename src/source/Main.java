@@ -47,7 +47,7 @@ public class Main {
        if(choice <= menui) {
            if(choice == 1) {
                Grid grid = new Grid(numberOfRows, numberOfColumns);
-               Game game = new Game(grid, numberOfPlayers);
+               Game game = new Game(grid, numberOfPlayers, settingsPage);
                game.startGame();
            }
            else if(choice==2 && resumeButton) {

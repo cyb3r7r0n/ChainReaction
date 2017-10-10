@@ -38,10 +38,6 @@ public class Cell implements Serializable {
         this.criticalMass = criticalMass;
     }
 
-    public int getCriticalMass() {
-        return criticalMass;
-    }
-
     public boolean addOrb(String colour){
         this.colour = colour;
         boolean burst = false;
