@@ -60,7 +60,19 @@ public class Game implements Serializable{
         this.states.push(new Game(this));
         while (playerWon()==null) {
             for(int i=0; i<numberOfPlayers; i++) {
-                saveGame();
+//                System.out.println(players[i]);
+                if(players[i].hasLost() && numberOfTurns>numberOfPlayers) {
+                    saveGame();
+                    continue;
+                }
+                if(numberOfTurns>numberOfPlayers && grid.hasLost(players[i])) {
+                    players[i].lost();
+                    saveGame();
+                    if(players[i].hasLost()) {
+                        saveGame();
+                        continue;
+                    }
+                }
                 if(this.lastMoveWasAUndo) {
                     i = (numberOfPlayers+i-2)%numberOfPlayers;
                     this.currentPlayer = players[i];
@@ -119,13 +131,14 @@ public class Game implements Serializable{
                 int y = Main.input.nextInt();
                 try {
                     grid.isLegal(x, y, currentPlayer.getColour());
+                    System.out.println("check");
                     Grid.reached = new boolean[grid.getNumberOfRows()][grid.getNumberOfColumns()];
                     Grid.sum = 0;
                     grid.addOrb(x, y, currentPlayer.getColour());
                     moved = true;
                     numberOfTurns++;
-
                 } catch (IllegalMoveException e) {
+                    moved = false;
                     System.out.println(e);
                 }
             }
@@ -171,6 +184,18 @@ public class Game implements Serializable{
         this.lastMoveWasAUndo = false;
         while (playerWon()==null) {
             for(int i=this.nextPlayer; i<numberOfPlayers && help; i++) {
+                if(players[i].hasLost() && numberOfTurns>numberOfPlayers) {
+                    saveGame();
+                    continue;
+                }
+                if(numberOfTurns>numberOfPlayers && grid.hasLost(players[i])) {
+                    players[i].lost();
+                    saveGame();
+                    if(players[i].hasLost()) {
+                        saveGame();
+                        continue;
+                    }
+                }
                 if(this.lastMoveWasAUndo) {
                     i = (numberOfPlayers+i-2)%numberOfPlayers;
                     this.currentPlayer = players[i];
@@ -187,6 +212,18 @@ public class Game implements Serializable{
                     help = false;
             }
             for(int i=0; i<numberOfPlayers && !help; i++) {
+                if(players[i].hasLost() && numberOfTurns>numberOfPlayers) {
+                    saveGame();
+                    continue;
+                }
+                if(numberOfTurns>numberOfPlayers && grid.hasLost(players[i])) {
+                    players[i].lost();
+                    saveGame();
+                    if(players[i].hasLost()) {
+                        saveGame();
+                        continue;
+                    }
+                }
                 if(this.lastMoveWasAUndo) {
                     i = (numberOfPlayers+i-2)%numberOfPlayers;
                     this.currentPlayer = players[i];
@@ -206,4 +243,6 @@ public class Game implements Serializable{
         saveGame();
         System.out.println(playerWon()+" won the game");
     }
+
+
 }

@@ -94,4 +94,14 @@ public class Grid implements Serializable, Colours, Cloneable {
         return true;
     }
 
+    public boolean hasLost(Player player) {
+        for (int i=0; i<numberOfRows; i++) {
+            for (int j=0; j<numberOfRows; j++) {
+                if(grid[i][j].getColour()!=null && grid[i][j].getColour().equals(player.getColour()))
+                    return false;
+            }
+        }
+        return true;
+    }
+
 }
