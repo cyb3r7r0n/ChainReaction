@@ -1,27 +1,28 @@
 package source;
 
 import exceptions.MaxPlayersExceeded;
+import javafx.scene.paint.Color;
 
 import java.io.*;
 
 public class SettingsPage implements Colours, Serializable {
-    private String[] colours;
+    private Color[] colours;
     private static final long serialVersionUID = 5L;
 
     public SettingsPage() {
-        colours = new String[8];
-        colours[0] = red;
-        colours[1] = blue;
-        colours[2] = yellow;
-        colours[3] = green;
-        colours[4] = pink;
-        colours[5] = orange;
-        colours[6] = white;
-        colours[7] = teal;
+        colours = new Color[8];
+        colours[0] = Color.RED;
+        colours[1] = Color.BLUE;
+        colours[2] = Color.YELLOW;
+        colours[3] = Color.GREEN;
+        colours[4] = Color.PINK;
+        colours[5] = Color.ORANGE;
+        colours[6] = Color.WHITE;
+        colours[7] = Color.TEAL;
         saveSettings();
     }
 
-    public void setColours(String[] c) {
+    public void setColours(Color[] c) {
         colours = c;
     }
 
@@ -70,7 +71,7 @@ public class SettingsPage implements Colours, Serializable {
             int playerNumber = Main.input.nextInt();
             if(playerNumber<=8 && playerNumber>0) {
                 System.out.println("Select the colour");
-                String colour = Main.input.next();
+                Color colour = red;
                 if(colour.equals(red) || colour.equals(blue) || colour.equals(yellow) || colour.equals(green) || colour.equals(orange) || colour.equals(pink) || colour.equals(white) || colour.equals(teal)) {
                     selectColor(colour, playerNumber-1);
                     saveSettings();
@@ -86,11 +87,11 @@ public class SettingsPage implements Colours, Serializable {
         Main.loadMainPage();
     }
 
-    public String[] getColours() {
+    public Color[] getColours() {
         return colours;
     }
 
-    public void selectColor(String colour, int j) {
+    public void selectColor(Color colour, int j) {
         for (int i=0; i<8; i++) {
             if(colours[i].equals(colour)) {
                 colours[i] = colours[j];

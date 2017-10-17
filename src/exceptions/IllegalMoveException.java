@@ -1,12 +1,13 @@
 package exceptions;
 
+import javafx.scene.paint.Color;
 import source.Cell;
 
 public class IllegalMoveException extends Throwable {
     private Cell cell;
-    private String colour;
+    private Color colour;
 
-    public IllegalMoveException(Cell cell, String colour) {
+    public IllegalMoveException(Cell cell, Color colour) {
         this.colour = colour;
         this.cell = cell;
     }

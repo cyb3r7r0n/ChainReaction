@@ -1,12 +1,14 @@
 package source;
 
+import javafx.scene.paint.Color;
+
 public interface Colours{
-    String blue = "b";
-    String red = "r";
-    String yellow = "y";
-    String green = "g";
-    String pink = "p";
-    String orange = "o";
-    String white = "w";
-    String teal = "t";
+    Color blue = Color.BLUE;
+    Color red = Color.RED;
+    Color yellow = Color.YELLOW;
+    Color green = Color.GREEN;
+    Color pink = Color.PINK;
+    Color orange = Color.ORANGE;
+    Color white = Color.WHITE;
+    Color teal = Color.TEAL;
 }

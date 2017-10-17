@@ -1,9 +1,11 @@
 package source;
 
+import javafx.scene.paint.Color;
+
 import java.io.Serializable;
 
 public class Cell implements Serializable {
-    private String colour;
+    private Color colour;
     private final int x;
     private final int y;
     private Grid grid;
@@ -38,7 +40,7 @@ public class Cell implements Serializable {
         this.criticalMass = criticalMass;
     }
 
-    public boolean addOrb(String colour){
+    public boolean addOrb(Color colour){
         this.colour = colour;
         boolean burst = false;
         if(numberOfOrbs+1 == criticalMass)
@@ -50,7 +52,7 @@ public class Cell implements Serializable {
     }
 
     public String getColour() {
-        return colour;
+        return colour.toString();
     }
 
     @Override

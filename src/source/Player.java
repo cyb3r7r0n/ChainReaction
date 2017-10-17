@@ -1,25 +1,27 @@
 package source;
 
+import javafx.scene.paint.Color;
+
 import java.io.Serializable;
 
 public class Player implements Serializable{
-    private final String colour;
+    private final Color colour;
     private static final long serialVersionUID = 4L;
     private boolean stillPlaying;
 
 
-    public Player(String colour) {
+    public Player(Color colour) {
         this.colour = colour;
         this.stillPlaying = true;
     }
 
-    public String getColour() {
+    public Color getColour() {
         return colour;
     }
 
     @Override
     public String toString() {
-        return this.colour;
+        return this.colour.toString();
     }
 
     public boolean hasLost() {

@@ -1,6 +1,7 @@
 package source;
 
 import exceptions.IllegalMoveException;
+import javafx.scene.paint.Color;
 
 import java.io.Serializable;
 
@@ -52,7 +53,7 @@ public class Grid implements Serializable, Cloneable {
         return numberOfRows;
     }
 
-    public void addOrb(int i, int j, String colour) {
+    public void addOrb(int i, int j, Color colour) {
         if (i >= 0 && i < this.numberOfRows && j >= 0 && j < this.numberOfColumns) {
             if(sum!=numberOfColumns*numberOfRows) {
                 boolean burst = this.grid[i][j].addOrb(colour);
@@ -74,13 +75,13 @@ public class Grid implements Serializable, Cloneable {
         }
     }
 
-    public void isLegal(int i, int j, String colour) throws IllegalMoveException {
+    public void isLegal(int i, int j, Color colour) throws IllegalMoveException {
         if(!colour.equals(grid[i][j].getColour()) && grid[i][j].getColour()!=null) {
             throw new IllegalMoveException(grid[i][j], colour);
         }
     }
 
-    public boolean gameComplete(String colour, int turns) {
+    public boolean gameComplete(Color colour, int turns) {
         if(turns<=2)
             return false;
         for(int i=0; i<numberOfRows; i++) {

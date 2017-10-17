@@ -1,6 +1,7 @@
 package source;
 
 import exceptions.IllegalMoveException;
+import javafx.scene.paint.Color;
 
 import java.io.*;
 import java.util.Stack;
@@ -21,7 +22,7 @@ public class Game implements Serializable{
         this.grid = grid;
         this.numberOfPlayers = numberOfPlayers;
         this.players = new Player[numberOfPlayers];
-        String[] colours = settingsPage.getColours();
+        Color[] colours = settingsPage.getColours();
         for(int i=0; i<numberOfPlayers; i++) {
             this.players[i] = new Player(colours[i]);
         }
