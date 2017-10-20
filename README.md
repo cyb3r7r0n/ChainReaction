@@ -1,0 +1,1 @@
+A Chain Reaction game implemented in Java using the javaFX module. The game can be played by 2-8 players.
