@@ -15,6 +15,7 @@ public class TileGrid {
     public  int sum;
     private Group group;
     private Game game;
+    private static final int duration = 300;
 
     public TileGrid(int numberOfRows, int numberOfColumns, Game game) {
         this.numberOfColumns = numberOfColumns;

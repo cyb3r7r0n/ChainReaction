@@ -89,7 +89,7 @@ public class SettingsPage implements Colours, Serializable {
             }
             choiceBox.setValue(colours[i]);
 
-            choiceBox.setOnAction(new ActionHandler(choiceBox, i, stage));
+            //choiceBox.setOnAction(new ActionHandler(choiceBox, i, stage));
             colourChoice.add(i,choiceBox);
         }
 

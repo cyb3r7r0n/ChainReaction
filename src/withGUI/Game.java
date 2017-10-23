@@ -1,11 +1,13 @@
 package withGUI;
 
 import GUI.*;
+import javafx.animation.Animation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.io.*;
 import java.util.EmptyStackException;
@@ -93,6 +95,7 @@ public class Game {
 
     public void takeTurn() {
         turns++;
+        Tile.duration = 0;
         if(turns > numberOfPlayers) {
             if (tileGrid.hasLost(players[currentPlayer].getColor())) {
                 players[currentPlayer].lost();

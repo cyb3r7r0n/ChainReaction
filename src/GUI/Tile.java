@@ -1,8 +1,16 @@
 package GUI;
 
+import javafx.animation.Interpolator;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.PathTransition;
+import javafx.animation.Timeline;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Arc;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Sphere;
+import javafx.util.Duration;
 import withGUI.Game;
 
 public class Tile {
@@ -17,6 +25,9 @@ public class Tile {
     private Game game;
     private int criticalMass;
     private TileGrid tileGrid;
+    public static int duration = 0;
+    private static final int dur = 2;
+    public static boolean burstbool = false;
 
     public int getY() {
         return y;
@@ -61,6 +72,7 @@ public class Tile {
 
         rectangle.setOnMouseClicked( e-> {
             if(this.color==null || this.color.equals(Board.currentColor)) {
+                System.out.println("x: "+this.x+" y: "+this.y+" rows: "+this.tileGrid.getNumberOfRows()+" cols: "+this.tileGrid.getNumberOfColumns());
                 tileGrid.replenish();
                 tileGrid.addOrb(x, y, Board.currentColor);
                 game.takeTurn();
@@ -92,6 +104,82 @@ public class Tile {
             this.numberOfOrbs=0;
             this.color = null;
             this.group.getChildren().addAll(innerGroup);
+            int i = this.y;
+            int j = this.x;
+            Timeline timeline = new Timeline();
+            if(i > 0) {
+                Sphere orb = new Orb(x, y, center_x+50, center_y+50, game, tileGrid).getOrb(color);
+                innerGroup.getChildren().addAll(orb);
+                System.out.println("timeline should play");
+                timeline.getKeyFrames().addAll(
+                        new KeyFrame(
+                        		new Duration(duration),
+                                new KeyValue(orb.translateXProperty(), center_x+50),
+                                new KeyValue(orb.translateYProperty(), center_y+50)
+                        ),
+                        new KeyFrame(
+                                new Duration(duration+250),
+                                new KeyValue(orb.translateXProperty(), center_x-50),
+                                new KeyValue(orb.translateYProperty(), center_y+50)
+                        )
+                );
+            }
+
+            if(i < this.tileGrid.getNumberOfColumns()-1) {
+                Sphere orb = new Orb(x, y, center_x+50, center_y+50, game, tileGrid).getOrb(color);
+                innerGroup.getChildren().addAll(orb);
+                System.out.println("timeline should play");
+                timeline.getKeyFrames().addAll(
+                        new KeyFrame(
+                        		new Duration(duration),
+                                new KeyValue(orb.translateXProperty(), center_x+50),
+                                new KeyValue(orb.translateYProperty(), center_y+50)
+                        ),
+                        new KeyFrame(
+                                new Duration(duration+250),
+                                new KeyValue(orb.translateXProperty(), center_x+150),
+                                new KeyValue(orb.translateYProperty(), center_y+50)
+                        )
+                );
+            }
+
+            if(j > 0) {
+                Sphere orb = new Orb(x, y, center_x+50, center_y+50, game, tileGrid).getOrb(color);
+                innerGroup.getChildren().addAll(orb);
+                System.out.println("timeline should play");
+                timeline.getKeyFrames().addAll(
+                        new KeyFrame(
+                        		new Duration(duration),
+                                new KeyValue(orb.translateXProperty(), center_x+50),
+                                new KeyValue(orb.translateYProperty(), center_y+50)
+                        ),
+                        new KeyFrame(
+                                new Duration(duration+250),
+                                new KeyValue(orb.translateXProperty(), center_x+50),
+                                new KeyValue(orb.translateYProperty(), center_y-50)
+                        )
+                );
+            }
+
+            if(j < this.tileGrid.getNumberOfRows()-1) {
+                Sphere orb = new Orb(x, y, center_x+50, center_y+50, game, tileGrid).getOrb(color);
+                innerGroup.getChildren().addAll(orb);
+                System.out.println("timeline should play");
+                timeline.getKeyFrames().addAll(
+                        new KeyFrame(
+                        		new Duration(duration),
+                                new KeyValue(orb.translateXProperty(), center_x+50),
+                                new KeyValue(orb.translateYProperty(), center_y+50)
+                        ),
+                        new KeyFrame(
+                                new Duration(duration+250),
+                                new KeyValue(orb.translateXProperty(), center_x+50),
+                                new KeyValue(orb.translateYProperty(), center_y+150)
+                        )
+                );
+            }
+            timeline.play();
+            duration+=250;
             return true;
         }
         if (this.numberOfOrbs == 1) {
@@ -102,13 +190,63 @@ public class Tile {
             Orb orb1 = new Orb(x, y,center_x+40, center_y+50, game, tileGrid);
             Orb orb2 = new Orb(x, y,center_x+60, center_y+50, game, tileGrid);
             this.color = color;
-            innerGroup.getChildren().addAll(orb1.getOrb(color), orb2.getOrb(color));
+            Sphere o1 = orb1.getOrb(color);
+            Sphere o2 = orb2.getOrb(color);
+            Arc e1 = new Arc(center_x + 50, center_y+50, 10, 10, 0, 360); 
+            Arc e2 = new Arc(center_x + 50, center_y+50, 10, 10, 180, 360);
+            PathTransition t1 = new PathTransition();
+            t1.setPath(e1);
+            t1.setNode(o1);
+            t1.setInterpolator(Interpolator.LINEAR);
+            t1.setDuration(Duration.seconds(dur));
+            t1.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            t1.setCycleCount(Timeline.INDEFINITE);
+            t1.play();
+            PathTransition t2 = new PathTransition();
+            t2.setPath(e2);
+            t2.setNode(o2);
+            t2.setInterpolator(Interpolator.LINEAR);
+            t2.setDuration(Duration.seconds(dur));
+            t2.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            t2.setCycleCount(Timeline.INDEFINITE);
+            t2.play();
+            innerGroup.getChildren().addAll(o1,o2);
         } else if (this.numberOfOrbs == 3) {
             Orb orb1 = new Orb(x, y,center_x+50, center_y+50-10, game, tileGrid);
             Orb orb2 = new Orb(x, y,center_x+50 - 10, center_y+50+10, game, tileGrid);
             Orb orb3 = new Orb(x, y,center_x+50+10, center_y+50+10, game, tileGrid);
             this.color = color;
-            innerGroup.getChildren().addAll(orb1.getOrb(color), orb2.getOrb(color), orb3.getOrb(color));
+            Sphere o1 = orb1.getOrb(color);
+            Sphere o2 = orb2.getOrb(color);
+            Sphere o3 = orb3.getOrb(color);
+            Arc e1 = new Arc(center_x + 50, center_y+50, 10, 10, 90, 360); 
+            Arc e2 = new Arc(center_x + 50, center_y+50, 10, 10, -30, 360);
+            Arc e3 = new Arc(center_x + 50, center_y+50, 10, 10, -150, 360);
+            PathTransition t1 = new PathTransition();
+            t1.setPath(e1);
+            t1.setNode(o1);
+            t1.setInterpolator(Interpolator.LINEAR);
+            t1.setDuration(Duration.seconds(dur));
+            t1.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            t1.setCycleCount(Timeline.INDEFINITE);
+            t1.play();
+            PathTransition t2 = new PathTransition();
+            t2.setPath(e2);
+            t2.setNode(o2);
+            t2.setInterpolator(Interpolator.LINEAR);
+            t2.setDuration(Duration.seconds(dur));
+            t2.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            t2.setCycleCount(Timeline.INDEFINITE);
+            t2.play();
+            PathTransition t3 = new PathTransition();
+            t3.setPath(e3);
+            t3.setNode(o3);
+            t3.setInterpolator(Interpolator.LINEAR);
+            t3.setDuration(Duration.seconds(dur));
+            t3.setOrientation(PathTransition.OrientationType.ORTHOGONAL_TO_TANGENT);
+            t3.setCycleCount(Timeline.INDEFINITE);
+            t3.play();
+            innerGroup.getChildren().addAll(o1,o2,o3);
         }
         this.group.getChildren().addAll(innerGroup);
         return false;
