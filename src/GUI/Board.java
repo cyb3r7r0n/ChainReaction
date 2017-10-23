@@ -58,7 +58,7 @@ public class Board extends Application {
     }
 
     private static VBox menuGroup(Stage primaryStage) {
-        Label numPlayers = new Label("Number Of PLayers");
+        Label numPlayers = new Label("Number Of Players");
         Font font = new Font(20);
         numPlayers.setFont(font);
 

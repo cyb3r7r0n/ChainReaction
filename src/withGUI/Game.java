@@ -159,7 +159,13 @@ public class Game {
         this.stage.setResizable(false);
         stage.setTitle("Game Page");
         this.tileGrid = new TileGrid(numberOfRows, numberOfColumns, this);
-
+        Button settings = new Button("Settings");
+        settings.setMinWidth(100);
+        settings.setTranslateX(50);
+        settings.setTranslateY(50);
+        settings.setOnAction( e -> {
+            SettingsPage.showPage(stage);
+        });
         Button button = new Button("UNDO");
         button.setMinWidth(100);
         button.setTranslateX((numberOfColumns)*100+50);
@@ -168,7 +174,7 @@ public class Game {
 
         Group group = new Group();
         Scene scene = new Scene(group, (numberOfColumns+2)*100, (numberOfRows+2)*100);
-        group.getChildren().addAll(tileGrid.getGrid(), LineGrid.getGrid(numberOfColumns, numberOfRows), button);
+        group.getChildren().addAll(tileGrid.getGrid(), LineGrid.getGrid(numberOfColumns, numberOfRows), button, settings);
         scene.setFill(Color.GRAY);
 
         this.stage.setScene(scene);
