@@ -1,6 +1,7 @@
 package GUI;
 
 
+import javafx.animation.Animation;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import withGUI.Cell;
@@ -16,6 +17,7 @@ public class TileGrid {
     private Group group;
     private Game game;
     private static final int duration = 300;
+    public static int count = 0;
 
     public TileGrid(int numberOfRows, int numberOfColumns, Game game) {
         this.numberOfColumns = numberOfColumns;
@@ -47,6 +49,7 @@ public class TileGrid {
     public  boolean hasLost(Color color) {
         for (int i=0; i<numberOfRows; i++) {
             for (int j=0; j<numberOfColumns; j++) {
+            	System.out.println(tiles[i][j]);
                 if(tiles[i][j].getColor()!=null && tiles[i][j].getColor().equals(color))
                     return false;
             }
@@ -59,15 +62,24 @@ public class TileGrid {
         reached = new boolean[numberOfRows][numberOfColumns];
     }
 
-    public  void addOrb(int i, int j, Color color) {
+    public  boolean addOrb(int i, int j, Color color) {
+    	Tile.burstbool = false;
         if(i>=0 && j>=0 && i<numberOfRows && j<numberOfColumns) {
             if(sum!=numberOfColumns*numberOfRows) {
-                boolean burst = tiles[i][j].addOrb(color);
-                if (burst) {
-                    addOrb(i + 1, j, color);
-                    addOrb(i - 1, j, color);
-                    addOrb(i, j + 1, color);
-                    addOrb(i, j - 1, color);
+                Tile.burstbool = tiles[i][j].addOrb(color);
+                if (Tile.burstbool) {
+                	count++;
+                	Tile.timeline.setOnFinished((e)->{
+	                tiles[i][j].innerGroup.getChildren().clear();	
+	            	addOrb(i + 1, j, color);
+	                addOrb(i - 1, j, color);
+	                addOrb(i, j + 1, color);
+	                addOrb(i, j - 1, color);
+	                count--;
+	                if (count == 0){
+	                	game.takeTurn();
+	                }
+                	});
                 }
                 if(!reached[i][j]) {
                     reached[i][j] = true;
@@ -75,6 +87,10 @@ public class TileGrid {
                 }
             }
         }
+        if (count == 0){
+        	game.takeTurn();
+        }
+        return true;
     }
 
     public Cell[][] getGrid2() {

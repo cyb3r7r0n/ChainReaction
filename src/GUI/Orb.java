@@ -1,5 +1,6 @@
 package GUI;
 
+import javafx.application.Platform;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.PhongMaterial;
 import javafx.scene.shape.Sphere;
@@ -35,7 +36,6 @@ public class Orb {
             if(this.color==null || this.color.equals(Board.currentColor)) {
                 tileGrid.replenish();
                 tileGrid.addOrb(x, y, Board.currentColor);
-                game.takeTurn();
             }
         });
         this.color = color;

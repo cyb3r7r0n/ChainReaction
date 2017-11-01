@@ -3,8 +3,10 @@ package GUI;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.ParallelTransition;
 import javafx.animation.PathTransition;
 import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.scene.Group;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
@@ -21,13 +23,14 @@ public class Tile {
     private int numberOfOrbs;
     private Group group;
     private Color color;
-    private Group innerGroup;
+    public Group innerGroup;
     private Game game;
     private int criticalMass;
     private TileGrid tileGrid;
     public static int duration = 0;
     private static final int dur = 2;
     public static boolean burstbool = false;
+    public static Timeline timeline = new Timeline();
 
     public int getY() {
         return y;
@@ -75,7 +78,6 @@ public class Tile {
                 System.out.println("x: "+this.x+" y: "+this.y+" rows: "+this.tileGrid.getNumberOfRows()+" cols: "+this.tileGrid.getNumberOfColumns());
                 tileGrid.replenish();
                 tileGrid.addOrb(x, y, Board.currentColor);
-                game.takeTurn();
                 rectangle.setFill(Color.BLACK);
             }
         });
@@ -101,12 +103,12 @@ public class Tile {
         this.innerGroup.getChildren().clear();
         innerGroup = new Group();
         if(numberOfOrbs==criticalMass) {
+        	timeline = new Timeline();
             this.numberOfOrbs=0;
             this.color = null;
             this.group.getChildren().addAll(innerGroup);
             int i = this.y;
             int j = this.x;
-            Timeline timeline = new Timeline();
             if(i > 0) {
                 Sphere orb = new Orb(x, y, center_x+50, center_y+50, game, tileGrid).getOrb(color);
                 innerGroup.getChildren().addAll(orb);
@@ -179,7 +181,6 @@ public class Tile {
                 );
             }
             timeline.play();
-            duration+=250;
             return true;
         }
         if (this.numberOfOrbs == 1) {

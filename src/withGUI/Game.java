@@ -5,6 +5,7 @@ import javafx.animation.Animation;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -159,22 +160,22 @@ public class Game {
         this.stage.setResizable(false);
         stage.setTitle("Game Page");
         this.tileGrid = new TileGrid(numberOfRows, numberOfColumns, this);
-        Button settings = new Button("Settings");
-        settings.setMinWidth(100);
-        settings.setTranslateX(50);
-        settings.setTranslateY(50);
-        settings.setOnAction( e -> {
-            SettingsPage.showPage(stage);
-        });
+        ChoiceBox<String> players = new ChoiceBox<>();
+        players.getItems().add("NEW GAME");
+        players.getItems().add("EXIT");
+        players.setMinWidth(100);
+        players.setTranslateX(50);
+        players.setTranslateY(50);
         Button button = new Button("UNDO");
         button.setMinWidth(100);
         button.setTranslateX((numberOfColumns)*100+50);
         button.setTranslateY(50);
-        button.setOnAction(e -> undo());
-
+        button.setOnMouseClicked(e -> {
+        	undo();
+        });
         Group group = new Group();
         Scene scene = new Scene(group, (numberOfColumns+2)*100, (numberOfRows+2)*100);
-        group.getChildren().addAll(tileGrid.getGrid(), LineGrid.getGrid(numberOfColumns, numberOfRows), button, settings);
+        group.getChildren().addAll(tileGrid.getGrid(), LineGrid.getGrid(numberOfColumns, numberOfRows), button, players);
         scene.setFill(Color.GRAY);
 
         this.stage.setScene(scene);
